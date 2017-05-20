@@ -1,0 +1,27 @@
+{
+  "name": "cbiCli",
+  "version": "1.0.0",
+  "main": "bundle.js",
+  "repository": {},
+  "license": "MIT",
+  "scripts": {
+    "prepublish": "rm -f bundle && npm run build",
+    "build": "rollup -c",
+    "postpublish": "git add bundle.js && git commit -m 'Post publish commit'"
+  },
+  "dependencies": {
+    "isomorphic-fetch": "^2.2.1",
+    "mysql": "^2.13.0",
+    "vorpal": "^1.11.4"
+  },
+  "devDependencies": {
+    "babel": "^6.23.0",
+    "babel-plugin-transform-class-properties": "^6.23.0",
+    "babel-plugin-transform-export-extensions": "^6.22.0",
+    "babel-plugin-transform-object-assign": "^6.22.0",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-preset-es2015": "^6.22.0",
+    "eslint": "^3.17.1",
+    "rollup": "^0.41.6"
+  }
+}
