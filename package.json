@@ -10,8 +10,10 @@
     "postpublish": "git add bundle.js && git commit -m 'Post publish commit'"
   },
   "dependencies": {
+    "fuse.js": "^3.0.4",
     "isomorphic-fetch": "^2.2.1",
     "mysql": "^2.13.0",
+    "sequelize": "^3.30.4",
     "vorpal": "^1.11.4"
   },
   "devDependencies": {

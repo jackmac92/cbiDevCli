@@ -1,13 +1,24 @@
 import Vorpal from 'vorpal';
-import { updateUserPackage } from './db/index';
+import { updateUserPackage } from './db/updateUserPackage';
+import findUserId from './db/findIdByName';
+import featureCacheReset from './api/resetFeatureCache';
 
 const vorpal = Vorpal();
 
 vorpal
-  .command('chpkg <package> [idUser]', 'Change package')
-  .action(function(args, callback) {
-    updateUserPackage(args.package, args.idUser);
-    this.log(`Updated user ${args.idUser} to ${args.package}`);
+  .command('id <name>', 'Find user id by name (fuzzy)')
+  .action(function({ name }, callback) {
+    const [bestMatch, ...otherResults] = findUserId(name);
+    this.log(`Ids for ${name}, best match is ${bestMatch}`);
+    callback();
+  });
+
+vorpal
+  .command('chpkg <idPackage> [idUser]', 'Change package')
+  .action(function({ idUser, idPackage }, callback) {
+    updateUserPackage(idPackage, idUser);
+    featureCacheReset(idUser);
+    this.log(`Updated user ${idUser} to ${idPackage}`);
     callback();
   });
 

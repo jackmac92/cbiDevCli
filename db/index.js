@@ -1,45 +1,17 @@
-import mysql from 'mysql';
+import Sequelize from 'sequelize';
 
-const createConnection = () => {
-  const connection = mysql.createConnection({
-    user: 'jmccown',
-    password: 'esEbdDtsY8',
+export const createConnection = () => {
+  const sequelize = new Sequelize('cbi_user', 'jmccown', 'esEbdDtsY8', {
     host: 'mysql-dev.cbinsights.com',
-    database: 'cbi_user'
+    dialect: 'mysql',
+    pool: {
+      max: 5,
+      min: 0,
+      idle: 10000
+    }
   });
-  connection.connect();
-  return connection;
-};
-
-export const updateUserPackage = (pkgId = 80, userId) => {
-  const connection = createConnection();
-  connection.query(
-    `
-      UPDATE cbi_user
-      SET id_package=${pkgId}
-      WHERE id_user=${userId}
-    `,
-    (error, results, fields) => {
-      if (error) throw error;
-      console.log('The solution is: ', results[0]);
-    }
-  );
-  connection.end();
-};
-
-export const findCompanyUser = () => {
-  const connection = createConnection();
-  connection.query(
-    `
-      SELECT id_user, lname, fname
-      FROM cbi_user
-      WHERE id_package=80 AND
-      fname != 'Test' AND fname != 'test'
-    `,
-    (error, results, fields) => {
-      if (error) throw error;
-      console.log('The solution is: ', results[0]);
-    }
-  );
-  connection.end();
+  return sequelize.authenticate().then(() => sequelize).catch(err => {
+    console.log(err);
+    throw new Error('Unable to authenticate with DB');
+  });
 };

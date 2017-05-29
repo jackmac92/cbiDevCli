@@ -1,15 +1,13 @@
-export const updateUserPackage = (pkgId = 80, userId) => {
-  const connection = createConnection();
-  connection.query(
-    `
+import { createConnection } from './index';
+
+export const updateUserPackage = (pkgId = 80, userId) =>
+  createConnection().then(sequelize => {
+    sequelize.query(
+      `
       UPDATE cbi_user
       SET id_package=${pkgId}
       WHERE id_user=${userId}
     `,
-    (error, results, fields) => {
-      if (error) throw error;
-      console.log('The solution is: ', results[0]);
-    }
-  );
-  connection.end();
-};
+      { type: sequelize.QueryTypes.UPDATE }
+    );
+  });
