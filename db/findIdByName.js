@@ -16,5 +16,5 @@ const getAllCompanyUsers = () =>
 const makeSearchObject = users =>
   new Fuse(users, { id: 'id_user', keys: ['fname', 'lname'] });
 
-export const findCompanyUser = name =>
+export default name =>
   getAllCompanyUsers().then(makeSearchObject).then(fuse => fuse.search(name));

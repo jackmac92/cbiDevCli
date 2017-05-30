@@ -1,9 +1,0 @@
-{
-    "presets": [ "es2015" ],
-    "plugins": [
-        "transform-object-assign",
-        "transform-object-rest-spread",
-        "transform-export-extensions",
-        "transform-class-properties"
-    ],
-}

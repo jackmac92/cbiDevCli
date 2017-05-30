@@ -1,5 +1,5 @@
 import Vorpal from 'vorpal';
-import { updateUserPackage } from './db/updateUserPackage';
+import { updateUserPackage } from './db/updateUserPkg';
 import findUserId from './db/findIdByName';
 import featureCacheReset from './api/resetFeatureCache';
 
@@ -8,9 +8,11 @@ const vorpal = Vorpal();
 vorpal
   .command('id <name>', 'Find user id by name (fuzzy)')
   .action(function({ name }, callback) {
-    const [bestMatch, ...otherResults] = findUserId(name);
-    this.log(`Ids for ${name}, best match is ${bestMatch}`);
-    callback();
+    const self = this;
+    findUserId(name).then(([bestMatch, ...otherResults]) => {
+      self.log(`Ids for ${name}, best match is ${bestMatch}`);
+      callback();
+    });
   });
 
 vorpal
