@@ -1,7 +1,7 @@
 import Sequelize from 'sequelize';
 
-export const createConnection = () => {
-  const sequelize = new Sequelize('cbi_user', 'jmccown', 'esEbdDtsY8', {
+export const createConnection = (db = 'cbi_user') => {
+  const sequelize = new Sequelize(db, 'jmccown', 'esEbdDtsY8', {
     host: 'mysql-dev.cbinsights.com',
     dialect: 'mysql',
     pool: {

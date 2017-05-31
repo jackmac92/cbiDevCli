@@ -1,6 +1,6 @@
 import { createConnection } from './index';
 
-export const updateUserPackage = (pkgId = 80, userId) =>
+export default (pkgId = 80, userId) =>
   createConnection().then(sequelize => {
     sequelize.query(
       `

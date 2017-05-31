@@ -1,5 +1,5 @@
 import Vorpal from 'vorpal';
-import { updateUserPackage } from './db/updateUserPkg';
+import updateUserPackage from './db/updateUserPkg';
 import findUserId from './db/findIdByName';
 import featureCacheReset from './api/resetFeatureCache';
 
@@ -21,6 +21,13 @@ vorpal
     updateUserPackage(idPackage, idUser);
     featureCacheReset(idUser);
     this.log(`Updated user ${idUser} to ${idPackage}`);
+    callback();
+  });
+
+vorpal
+  .command('buildLocal [env]', 'Change package')
+  .action(function({ env }, callback) {
+    this.log(`Building for ${env}`);
     callback();
   });
 
