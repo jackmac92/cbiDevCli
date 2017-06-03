@@ -5,9 +5,11 @@
   "repository": {},
   "license": "MIT",
   "scripts": {
-    "prepublish": "rm -f bundle && npm run build",
+    "prebuild": "rm -f bundle.js",
     "build": "rollup -c",
-    "postpublish": "git add bundle.js && git commit -m 'Post publish commit'"
+    "postbuild": "git add bundle.js",
+    "prepublish": "npm run build",
+    "postpublish": "git commit -m 'Post publish commit'"
   },
   "dependencies": {
     "fuse.js": "^3.0.4",
