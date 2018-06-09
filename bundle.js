@@ -5,10 +5,10 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 var Vorpal = _interopDefault(require('vorpal'));
 var Sequelize = _interopDefault(require('sequelize'));
 var Fuse = _interopDefault(require('fuse.js'));
-var fetch = _interopDefault(require('isomorphic-fetch'));
+var axios = _interopDefault(require('axios'));
 
-const createConnection = () => {
-  const sequelize = new Sequelize('cbi_user', 'jmccown', 'esEbdDtsY8', {
+const createConnection = (db = 'cbi_user') => {
+  const sequelize = new Sequelize(db, 'jmccown', 'esEbdDtsY8', {
     host: 'mysql-dev.cbinsights.com',
     dialect: 'mysql',
     pool: {
@@ -23,7 +23,7 @@ const createConnection = () => {
   });
 };
 
-const updateUserPackage = (pkgId = 80, userId) =>
+var updateUserPackage = (pkgId = 80, userId) =>
   createConnection().then(sequelize => {
     sequelize.query(
       `
@@ -54,13 +54,11 @@ var findUserId = name =>
   getAllCompanyUsers().then(makeSearchObject).then(fuse => fuse.search(name));
 
 var featureCacheReset = idUser =>
-  fetch(
-    `https://apidev.cbinsights.com/api/v1/user/features?idUser=${idUser}&noCache=true`
-  ).then(response => {
-    if (response.status >= 400) {
-      throw new Error('Bad response from server');
+  axios.get('https://apidev.cbinsights.com/api/v1/user/features', {
+    params: {
+      idUser,
+      noCache: true
     }
-    return response.json();
   });
 
 const vorpal = Vorpal();
@@ -81,6 +79,13 @@ vorpal
     updateUserPackage(idPackage, idUser);
     featureCacheReset(idUser);
     this.log(`Updated user ${idUser} to ${idPackage}`);
+    callback();
+  });
+
+vorpal
+  .command('buildLocal [env]', 'Change package')
+  .action(function({ env }, callback) {
+    this.log(`Building for ${env}`);
     callback();
   });
 

@@ -1,11 +1,9 @@
-import fetch from 'isomorphic-fetch';
+import axios from 'axios';
 
 export default idUser =>
-  fetch(
-    `https://apidev.cbinsights.com/api/v1/user/features?idUser=${idUser}&noCache=true`
-  ).then(response => {
-    if (response.status >= 400) {
-      throw new Error('Bad response from server');
+  axios.get('https://apidev.cbinsights.com/api/v1/user/features', {
+    params: {
+      idUser,
+      noCache: true
     }
-    return response.json();
   });

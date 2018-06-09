@@ -5,26 +5,20 @@
   "repository": {},
   "license": "MIT",
   "scripts": {
-    "prebuild": "rm -f bundle.js",
+    "start": "node bundle.js",
     "build": "rollup -c",
-    "postbuild": "git add bundle.js",
-    "prepublish": "npm run build",
-    "postpublish": "git commit -m 'Post publish commit'"
+    "postbuild": "git add bundle.js || echo 'workaround for docker'",
+    "prepublish": "npm run build || echo 'workaround for docker'",
+    "postpublish": "git commit -m 'Post publish commit' || echo 'no change'"
   },
   "dependencies": {
+    "axios": "^0.16.2",
     "fuse.js": "^3.0.4",
-    "isomorphic-fetch": "^2.2.1",
     "mysql": "^2.13.0",
     "sequelize": "^3.30.4",
     "vorpal": "^1.11.4"
   },
   "devDependencies": {
-    "babel": "^6.23.0",
-    "babel-plugin-transform-class-properties": "^6.23.0",
-    "babel-plugin-transform-export-extensions": "^6.22.0",
-    "babel-plugin-transform-object-assign": "^6.22.0",
-    "babel-plugin-transform-object-rest-spread": "^6.23.0",
-    "babel-preset-es2015": "^6.22.0",
     "eslint": "^3.17.1",
     "rollup": "^0.41.6"
   }
